@@ -41,9 +41,13 @@ https://docs.claude.com/en/docs/claude-code/hooks
 **What it is**
 Scoped procedures Claude invokes by name (slash commands like `/statusreport`, `/brief`, `/plan-milestone`). Each skill is a `.md` file with frontmatter and instructions Claude follows when you invoke it.
 
-**Location**
-- Project-local: `.claude/commands/<name>.md` or `.claude/skills/<name>.md`
-- Global: `~/.claude/commands/<name>.md` (available in every project)
+**Location** (all valid, Claude Code loads any of them)
+- `.claude/commands/<name>.md` — single-file project skill (this kit uses this layout)
+- `.claude/skills/<name>/SKILL.md` — folder-based project skill (supports assets in the same folder)
+- `~/.claude/commands/<name>.md` — single-file global skill (available in every project)
+- `~/.claude/skills/<name>/SKILL.md` — folder-based global skill
+
+Start with single-file (`commands/<name>.md`). Move to folder-based (`skills/<name>/SKILL.md`) only when the skill needs companion files (templates, scripts, example data).
 
 **When to use**
 - Any workflow you execute more than once a week (morning brief, status report, code review)

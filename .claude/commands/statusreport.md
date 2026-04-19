@@ -46,25 +46,28 @@ Do NOT ask the user what to look for. Scan deterministically.
 
 ### Global setup — `~/.claude/`
 
-Use `Glob` / `Read` to check existence + extract key signals:
+Use `Glob` / `Read` to check existence + extract key signals. Check both supported layouts for each kind of artifact — report whichever is present:
 
 - `~/.claude/CLAUDE.md` — exists? Contains identity section? Contains working-style section?
 - `~/.claude/rules/*.md` — any rules files?
-- `~/.claude/commands/*.md` — count, list names
-- `~/.claude/skills/*.md` — count, list names
+- `~/.claude/commands/*.md` — count, list names (single-file skill layout)
+- `~/.claude/skills/*/SKILL.md` — count, list names (folder-based skill layout)
 - `~/.claude/agents/*.md` — count, list names
 - `~/.claude/hooks/*` — any scripts?
 - `~/.claude/settings.json` — exists? Contains `"hooks"` key with at least one event configured?
 
 ### Project setup — at the user-provided path
 
-- `CLAUDE.md` — exists? Contains identity + working-style sections?
+- `CLAUDE.md` — exists at project root? Also check `.claude/CLAUDE.md` (both are valid). Contains identity + working-style sections?
 - `TASKS.md` — exists? Grep for `\[ME\]`, `\[AGENT\]`, `\[TOGETHER\]`, `\[WIP\]` — at least two tags present?
 - `feedback.md` — exists? Has any entries (non-empty content section)? Has entries modified in last 14 days?
 - `anti-patterns.md` — exists?
 - `.claude/` — exists?
-- `.claude/commands/`, `.claude/skills/`, `.claude/agents/`, `.claude/rules/`, `.claude/hooks/` — count files in each
-- `.claude/settings.json` / `settings.local.json` — exists? Has `"hooks"` configured?
+- `.claude/commands/*.md` + `.claude/skills/*/SKILL.md` — count files in each (both layouts valid)
+- `.claude/agents/*.md`, `.claude/rules/*.md`, `.claude/hooks/*` — count files in each
+- `.claude/settings.json` AND `.claude/settings.local.json` — exists? Either has `"hooks"` configured?
+
+> **Path access note:** If the user-provided audit target is outside the current Claude Code working directory, you may not be able to read it. If a Read/Glob fails due to path access, tell the user: "I can't read outside the current working directory. Either rerun Claude Code from the target project, or use `/add-dir <path>` to add it to this session." Then pause until they confirm.
 
 Collect all findings into a mental map. Do NOT output them yet.
 
@@ -87,7 +90,7 @@ Binary checks. Each level requires ALL preceding levels to also pass.
 - PASS if: L3 passed AND (`.claude/rules/*.md` exists with at least 1 file OR `CLAUDE.md` defines at least one session tag like `[MORNING]`, `[PROJECT-X]`, etc.).
 
 ### L5 — Automation
-- PASS if: L4 passed AND `settings.json` has `hooks` configured for at least one event AND at least one `.claude/agents/*.md` exists.
+- PASS if: L4 passed AND (`~/.claude/settings.json` OR `.claude/settings.json` OR `.claude/settings.local.json`) has `hooks` configured for at least one event AND at least one agent file exists in either `~/.claude/agents/*.md` or `.claude/agents/*.md`.
 
 Determine the user's current level = highest level that passed. If all fail, they are L0.
 
@@ -123,20 +126,19 @@ Output in chat. Scannable, under 40 lines. Use this exact structure:
 <2-3 sentence personalized note. Use Phase 1 answers. Example: "You mentioned 'Claude forgets rules between sessions' as your top friction — that's exactly what L3 (feedback loop) solves. The feedback.md + same-session-write-the-rule discipline is the single highest-leverage habit.">
 ```
 
-### Rules to surface per level
-- At L0 / L1: rules #1 (write rules not reminders), #2 (verify against code)
+### Rules to surface per level — always exactly 3
+
+- At L0 / L1: rules #1 (write rules, not reminders), #2 (verify against code), #10 (self-check before delivering)
 - At L2: rules #3 (task ownership), #4 (acceptance criteria), #8 (never re-add deleted content)
 - At L3: rules #1 (reinforces the loop), #9 (surface contradictions), #10 (self-check before delivering)
-- At L4: rules #5 (batch questions), #6 (session tags), #7 (docs are commit gate)
-- At L5: rules #9, #10 — at automation level, the failure modes are subtle
+- At L4: rules #5 (batch questions), #6 (session tags), #7 (docs are a commit gate)
+- At L5: rules #7 (docs commit gate), #9 (surface contradictions), #10 (self-check) — at automation level, the failure modes are subtle
 
-Always surface exactly 3 rules that are most actionable at the user's current level.
-
-### Tailor by friction answer
-- "forgets rules between sessions" → emphasize feedback.md + CLAUDE.md section
-- "wastes time asking for context" → emphasize session tags + context files
-- "makes confident mistakes" → emphasize anti-patterns.md + rule #5 (self-check) + rule #2 (verify)
-- "no good workflow yet" → emphasize starting at L1, not trying to jump levels
+### Tailor by friction answer (override the level defaults if a stronger match)
+- "forgets rules between sessions" → #1 (write rules), #8 (never re-add deleted), #9 (surface contradictions)
+- "wastes time asking for context I already gave" → #6 (session tags), #1 (write rules), #5 (batch questions)
+- "makes confident mistakes" → #2 (verify against code), #10 (self-check), #9 (surface contradictions)
+- "no good workflow yet" → #1 (write rules), #3 (task ownership), #4 (AC on autonomous tasks)
 
 ---
 

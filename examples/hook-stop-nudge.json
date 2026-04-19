@@ -1,5 +1,9 @@
 {
-  "_comment": "Stop hook — nudges Claude to keep going if it stopped mid-task. Paste this into ~/.claude/settings.json under the top-level hooks key. If you already have other Stop hooks, add this as an additional entry in the array.",
+  "_comment_1": "Stop hook — nudges Claude to verify completeness before ending a turn. Drop this whole object into ~/.claude/settings.json (replacing or merging with an existing 'hooks' key).",
+
+  "_comment_2": "Type 'prompt' runs a nested Claude turn using the given prompt. The result decides whether to continue the parent turn or end it. If you already have other Stop hooks, merge this entry into the Stop[] array rather than overwriting.",
+
+  "_comment_3": "Works cross-platform — no shell syntax, pure JSON config.",
 
   "hooks": {
     "Stop": [

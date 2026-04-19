@@ -71,6 +71,30 @@ Pull the latest kit anytime: `git pull` in the kit directory.
 
 ---
 
+## Promote to global — run the skill from any project
+
+Once you've run `/statusreport` once and trust it, copy the skills into your global skill directory so you don't need to `cd` into the kit each time:
+
+```bash
+# from the kit directory
+mkdir -p ~/.claude/commands
+cp .claude/commands/statusreport.md ~/.claude/commands/
+cp .claude/commands/log-feedback.md ~/.claude/commands/
+```
+
+Now `/statusreport` runs from any project. The skill still asks which directory to audit — it no longer assumes the kit.
+
+**To update later:**
+```bash
+cd claude-code-starter-kit && git pull && cp .claude/commands/*.md ~/.claude/commands/
+```
+
+**Why not symlink?** Symlinks work on Mac/Linux but not reliably on Windows. A plain `cp` + periodic re-pull is the simplest cross-platform pattern.
+
+**Can I delete the kit repo after promoting?** Yes, but you'll lose the templates + examples that `/statusreport` copies from when applying fixes. Keep the kit repo around unless you're comfortable pointing Claude to template URLs manually.
+
+---
+
 ## What this kit won't do
 
 - Set up MCP servers (link to Anthropic docs in `LINKS.md`)

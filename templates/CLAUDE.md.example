@@ -11,7 +11,7 @@
 <CUSTOMIZE: who you are in 3-5 lines. Role, context, what you work on. Claude uses this to calibrate tone and depth.>
 
 Example:
-> Roman Dobriakov. Berlin. Co-founder at Repuro (M&A buy-and-build). Strong network, commercial judgment, detail-oriented, impatient with vague thinking.
+> Senior PM at a B2B SaaS company. Based in Berlin, ~5 years in product. Strong at user research and prioritization, weaker on technical depth. Works daily with engineering, design, and sales. Impatient with hand-wavy answers and fluff.
 
 ## Working style
 

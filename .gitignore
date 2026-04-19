@@ -1,0 +1,15 @@
+# Local Codex review artifacts (generated per-run, not meant to be shared)
+.codex/
+
+# Claude Code local overrides (user-specific, should not be committed)
+CLAUDE.local.md
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp

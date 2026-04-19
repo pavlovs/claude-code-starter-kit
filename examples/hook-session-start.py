@@ -9,20 +9,23 @@ Wire it up in ~/.claude/settings.json:
       "SessionStart": [{
         "hooks": [{
           "type": "command",
-          "command": "python3 ~/.claude/hooks/session-start.py",
-          "async": true,
-          "once": true
+          "command": "python3 ~/.claude/hooks/session-start.py"
         }]
       }]
     }
   }
+
+Windows: replace "python3 ~/.claude/hooks/session-start.py" with
+"python %USERPROFILE%\\.claude\\hooks\\session-start.py" (or use `py -3`).
 
 Why this matters:
 - Claude's system date can be stale (especially in long-lived shells)
 - You don't want to re-explain "we're at commit X, branch Y" every session
 - Hooks are deterministic — the harness runs them, not Claude
 
-Writes JSON to stdout; Claude Code injects it into the session as additionalContext.
+Output shape per Claude Code docs:
+  {"hookSpecificOutput": {"hookEventName": "SessionStart",
+                          "additionalContext": "<text>"}}
 """
 
 import json
@@ -61,7 +64,10 @@ def main():
         context_lines.append(f"Last commit: {git['last_commit']}")
 
     output = {
-        "additionalContext": "\n".join(context_lines),
+        "hookSpecificOutput": {
+            "hookEventName": "SessionStart",
+            "additionalContext": "\n".join(context_lines),
+        }
     }
     print(json.dumps(output))
 
