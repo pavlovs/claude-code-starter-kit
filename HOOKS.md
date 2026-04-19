@@ -1,8 +1,10 @@
 # HOOKS — deterministic guardrails
 
+> *Adopt at L5.* Before L4 your protocols aren't stable enough to automate — premature hooks calcify bad patterns. Finish the feedback loop (L3) and session protocols (L4) first.
+
 Hooks are the only Claude Code mechanism that runs **outside** the model. The harness fires them at lifecycle events — before a tool call, after a file edit, on session start, on commit. They can't hallucinate. Use them for anything you want to be *always true*.
 
-Five proven patterns below, each with: what it does, when it fires, why it's worth having.
+Five proven patterns below, each with: what it does, when it fires, why it's worth having, and when to adopt it.
 
 ---
 

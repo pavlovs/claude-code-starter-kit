@@ -4,16 +4,17 @@ How to structure files so Claude finds the right context at the right time witho
 
 ---
 
-## The six file types
+## The seven file types
 
-| File | Purpose | Lifespan | Who writes it |
-|---|---|---|---|
-| `CLAUDE.md` | Identity, hard constraints, session protocols | Changes ~monthly | You |
-| `TASKS.md` | Active tasks with ownership tags | Changes daily | You + Claude |
-| `feedback.md` | Intake log for corrections → rules | Grows continuously | Claude (triggered by your corrections) |
-| `anti-patterns.md` | Named failure patterns with detection + fix | Grows slowly | Claude (promoted from feedback.md) |
-| `.claude/rules/*.md` | Modular rule sets (when CLAUDE.md grows past ~150 lines) | Changes ~monthly | You |
-| `Claude_Context/*.md` (or similar) | Role/domain context loaded on demand | Changes when domain changes | You |
+| File | Purpose | Adopt at | Lifespan | Who writes it |
+|---|---|---|---|---|
+| `CLAUDE.md` | Identity, hard constraints, session protocols | L1 | Changes ~monthly | You |
+| `TASKS.md` | Active tasks with ownership tags | L2 | Changes daily | You + Claude |
+| `feedback.md` | Intake log for corrections → rules | L3 | Grows continuously | Claude (triggered by your corrections) |
+| `anti-patterns.md` | Named failure patterns with detection + fix | L3 | Grows slowly | Claude (promoted from feedback.md) |
+| `learnings.md` | Meta-knowledge about Claude Code *as a tool* | L3 | Grows slowly | You + Claude |
+| `.claude/rules/*.md` | Modular rule sets (when CLAUDE.md grows past ~150 lines) | L4 | Changes ~monthly | You |
+| `Claude_Context/*.md` (or similar) | Role/domain context loaded on demand | L4 | Changes when domain changes | You |
 
 Each has exactly one job. Don't mix.
 
@@ -50,7 +51,25 @@ Each has exactly one job. Don't mix.
 
 ---
 
-## Global vs. project boundary
+## Global vs. project split *(adopt at L4, optional)*
+
+**When to adopt:** you work across 3+ projects and keep copy-pasting the same identity / working-style / hard constraints into each CLAUDE.md. Skip this entire section if you're in a single project — it adds complexity without payoff.
+
+**The move:**
+- Identity / working-style / hard constraints that are *true everywhere* → `~/.claude/rules/*.md`
+- Project-specific stuff (TASKS, feedback, anti-patterns, role context) → stays in the project
+- Cross-project skills you invoke weekly → `~/.claude/commands/*.md`
+- Per-project skills → `<project>/.claude/commands/*.md`
+
+After the move, each project's `CLAUDE.md` becomes ~30–50 lines: project identity + "hard constraints specific to this project" + a pointer to where global rules live. Claude Code loads both automatically.
+
+**Decision test:** if the same rule is pasted into 3+ projects unchanged, it's global. If it changes per project, it's local.
+
+**Trap:** moving everything global too early. Before you've run 3 projects with local CLAUDE.md, you don't know which rules actually generalize. You'll over-promote, then have to demote. Keep it local until the copy-paste pain is real.
+
+---
+
+## Directory layout reference
 
 ```
 ~/.claude/                     ← applies to ALL projects
@@ -126,6 +145,49 @@ Four tag types (exactly four — resist inventing more):
 - `[WIP]` — actively in progress, don't touch
 
 **Every [AGENT] task needs an `| AC:` field.** Without AC, "done" is subjective. See `WORKFLOW.md` for AC patterns.
+
+---
+
+## The three-tier knowledge loop *(adopt at L3)*
+
+Three files, one job each. Don't merge them.
+
+**1. `feedback.md` — intake.**
+Fresh corrections land here as rules. Format: "Always/Never X BECAUSE Y". Entry lifespan: days to weeks. Use `/log-feedback` to capture corrections without losing them.
+
+**2. `anti-patterns.md` — promoted patterns.**
+When the same failure recurs or represents a broader category, promote from feedback.md with a name (e.g., `ZOMBIE-CONTENT`, `STALE-DOCS`). Entry lifespan: months. These are the patterns you pattern-match *against* in every session.
+
+**3. `learnings.md` — meta-knowledge about Claude Code.**
+Orthogonal to the other two. Captures how the *tool itself* behaves:
+- "SessionStart hooks require `hookSpecificOutput` wrapper — not top-level `additionalContext`"
+- "Skills only load from `~/.claude/commands/` or cwd's `.claude/commands/` — not parent dirs"
+- "Model X drifts on prompts over 4k tokens in the middle"
+
+Without (3), you re-discover the same tool quirks in every new project. Most users scatter this knowledge across Notion, Slack, or their memory. Having it next to the rules makes it reloadable.
+
+**What belongs in which:**
+
+| If the mistake is about... | File |
+|---|---|
+| What Claude did wrong on *your project* | `feedback.md` (raw) → `anti-patterns.md` (promoted) |
+| How Claude Code *the tool* behaves | `learnings.md` |
+| A bug in your own code | git commit msg, not here |
+
+**Example entries:**
+
+```markdown
+# learnings.md
+
+## Hooks
+- `SessionStart` hook output must be wrapped: `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "..."}}`. Top-level `additionalContext` is silently ignored. (2026-04-19)
+
+## Skills
+- Skills load from exactly two paths: `~/.claude/commands/<name>.md` (global) and `<cwd>/.claude/commands/<name>.md` (project). Nothing else is searched. (2026-04-18)
+
+## Tools
+- `Read` tool can't access paths outside the session's working directory. Use `/add-dir <path>` or restart from the target dir. (2026-04-17)
+```
 
 ---
 

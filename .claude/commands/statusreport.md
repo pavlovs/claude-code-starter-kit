@@ -62,9 +62,11 @@ Use `Glob` / `Read` to check existence + extract key signals. Check both support
 - `TASKS.md` — exists? Grep for `\[ME\]`, `\[AGENT\]`, `\[TOGETHER\]`, `\[WIP\]` — at least two tags present?
 - `feedback.md` — exists? Has any entries (non-empty content section)? Has entries modified in last 14 days?
 - `anti-patterns.md` — exists?
+- `learnings.md` — exists? (Third tier of the knowledge loop — meta-knowledge about Claude Code as a tool.)
 - `.claude/` — exists?
 - `.claude/commands/*.md` + `.claude/skills/*/SKILL.md` — count files in each (both layouts valid)
 - `.claude/agents/*.md`, `.claude/rules/*.md`, `.claude/hooks/*` — count files in each
+- `.claude/agents/planner.md`, `implementer.md`, `plan-reviewer.md` — does the user have the 3-agent loop configured? (L4 signal.)
 - `.claude/settings.json` AND `.claude/settings.local.json` — exists? Either has `"hooks"` configured?
 
 > **Path access note:** If the user-provided audit target is outside the current Claude Code working directory, you may not be able to read it. If a Read/Glob fails due to path access, tell the user: "I can't read outside the current working directory. Either rerun Claude Code from the target project, or use `/add-dir <path>` to add it to this session." Then pause until they confirm.
@@ -85,9 +87,17 @@ Binary checks. Each level requires ALL preceding levels to also pass.
 
 ### L3 — Feedback loop
 - PASS if: L2 passed AND `feedback.md` exists AND has non-empty content (more than just headers) AND has been modified in the last 14 days (check mtime if possible; otherwise check for dated entries).
+- **Bonus signal (note in evidence line):** `learnings.md` also exists — user has the full 3-tier knowledge loop.
 
-### L4 — Protocols + context layers
-- PASS if: L3 passed AND (`.claude/rules/*.md` exists with at least 1 file OR `CLAUDE.md` defines at least one session tag like `[MORNING]`, `[PROJECT-X]`, etc.).
+### L4 — Protocols + context layers + methodology
+- PASS if: L3 passed AND at least ONE of the following is true:
+  - `.claude/rules/*.md` exists with at least 1 file (rules split)
+  - `~/.claude/rules/*.md` exists with at least 1 file (global split — multi-project operator)
+  - `CLAUDE.md` defines at least one session tag like `[MORNING]`, `[PROJECT-X]`, etc.
+  - `.claude/agents/planner.md` AND `implementer.md` AND `plan-reviewer.md` (or equivalent reviewer) all exist (3-agent loop)
+- **Bonus signals:**
+  - Multi-project operator: `~/.claude/rules/` has 2+ files (note in evidence)
+  - 3-agent loop active: all three agents present (note in evidence)
 
 ### L5 — Automation
 - PASS if: L4 passed AND (`~/.claude/settings.json` OR `.claude/settings.json` OR `.claude/settings.local.json`) has `hooks` configured for at least one event AND at least one agent file exists in either `~/.claude/agents/*.md` or `.claude/agents/*.md`.

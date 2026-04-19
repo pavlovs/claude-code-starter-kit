@@ -1,5 +1,7 @@
 # WORKFLOW — the loop that prevents rework
 
+> *Adopt at L4.* Before L3, task discipline and the feedback loop matter more than workflow rigor.
+
 Freestyling with Claude Code produces plausible-looking output with hidden defects. The fix isn't "try harder" — it's **structure**. This doc describes the loop.
 
 ```
@@ -86,6 +88,46 @@ Before shipping non-trivial work:
 - If it flags something you didn't see, you had a blind spot — good.
 
 **Rule:** If the reviewer finds nothing, either the work is genuinely tight or you gave the reviewer too little context. Feed it the spec + artifact + your own self-assessment. Ask it to challenge, not praise.
+
+---
+
+## The 3-agent loop — separate plan / implement / review *(adopt at L4)*
+
+For non-trivial builds, do NOT run plan + implement + review in the same conversation. One model = one set of blind spots. The fix is three different subagents:
+
+```
+[Main conversation]
+       │
+       ├──► Planner agent   (read-only; produces plan.md)
+       │
+       ├──► Implementer agent  (writes code from plan; doesn't touch plan)
+       │
+       └──► Reviewer agent   (read-only; reviews impl against spec + plan)
+```
+
+**Why three agents, not three passes:**
+- Each agent starts with a **fresh context** — it hasn't rationalized decisions it already made
+- Each has **scoped tools** — the planner can't write code, the reviewer can't edit
+- Blind spots don't transfer — what the planner assumed, the reviewer questions
+
+**Where they live (after you copy the templates):**
+- `<project>/.claude/agents/planner.md`
+- `<project>/.claude/agents/implementer.md`
+- `<project>/.claude/agents/plan-reviewer.md`
+
+(Templates ship as `.example` files — rename to activate.)
+
+**How to invoke:**
+The main conversation dispatches to each via the `Agent` tool, passing the spec + relevant context as a self-contained prompt. Each returns an artifact (plan → code → review report) that the main conversation checks before dispatching the next.
+
+**When NOT to use the 3-agent loop:**
+- Simple edits, one-file changes — overhead exceeds benefit
+- Exploratory work where the spec doesn't exist yet — use brainstorming skill instead
+- Anything under ~30 minutes of implementation — the orchestration cost dominates
+
+**Rule of thumb:** if the work would take you more than an hour to do alone, the 3-agent loop pays for its overhead. Below that, inline review is fine.
+
+**Template agents ship with this kit** at `.claude/agents/planner.md.example`, `implementer.md.example`, `plan-reviewer.md.example`. Copy to your project or modify in place.
 
 ---
 

@@ -1,0 +1,56 @@
+# learnings.md — meta-knowledge about Claude Code as a tool
+
+> Not project-specific corrections (those go in `feedback.md`).
+> Not recurring failure patterns (those go in `anti-patterns.md`).
+> This file captures how **Claude Code itself** behaves — things you'd re-discover in every new project if they weren't written down here.
+
+---
+
+## Format
+
+Each entry is 1–3 lines. Group by topic. Date entries so you can prune stale ones.
+
+```markdown
+## <Topic>
+- <Observation> (<YYYY-MM-DD>)
+```
+
+Keep it short. If an entry grows past 3 lines, move the detail to a linked doc and keep the summary here.
+
+---
+
+## Hooks
+
+<!-- Example:
+- `SessionStart` hook output must be wrapped: `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "..."}}`. Top-level `additionalContext` is silently ignored. (2026-04-19)
+-->
+
+## Skills
+
+<!-- Example:
+- Skills load from exactly two paths: `~/.claude/commands/<name>.md` (global) and `<cwd>/.claude/commands/<name>.md` (project). Parent dirs are not searched. (2026-04-18)
+-->
+
+## Subagents
+
+<!-- Example:
+- Subagents don't inherit main conversation context. Pre-extract any relevant facts into the agent's prompt or it'll re-read the same files. (2026-04-17)
+-->
+
+## Tools (Read, Write, Edit, Bash, etc.)
+
+<!-- Example:
+- `Read` cannot access paths outside the session's working directory. Use `/add-dir <path>` or restart from the target dir. (2026-04-17)
+-->
+
+## Models
+
+<!-- Example:
+- Opus 4.7 drifts on prompts over ~4k tokens in the middle section. Put the most important content at top or bottom. (2026-04-16)
+-->
+
+## Settings / config
+
+<!-- Example:
+- `.claude/settings.local.json` overrides `.claude/settings.json`. Both override `~/.claude/settings.json`. Hook configs merge, not replace. (2026-04-15)
+-->

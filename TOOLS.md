@@ -120,13 +120,16 @@ https://docs.claude.com/en/docs/claude-code/sub-agents
 **"I want a reviewer to check my work before I deliver."**
 → **Subagent.** Specifically, one with read-only tools.
 
+**"I want to separate plan / implement / review for a complex build."**
+→ **3-agent loop.** See WORKFLOW.md. Templates ship in `.claude/agents/` as `planner.md.example`, `implementer.md.example`, `plan-reviewer.md.example`.
+
 ---
 
 ## When to adopt each
 
+- **Skills — at L4.** As soon as you notice yourself repeating the same prompt, turn it into a skill.
+- **Subagents — at L4.** Mainly useful when your workflows are parallelizable or you need scoped context. Start with the 3-agent loop (WORKFLOW.md) on your next non-trivial build.
 - **Hooks — at L5.** Before L4, your protocols aren't stable enough to automate yet. Premature hooks calcify bad patterns.
-- **Skills — at L3–L4.** As soon as you notice yourself repeating the same prompt, turn it into a skill.
-- **Subagents — at L4+.** Mainly useful when your workflows are parallelizable or you need scoped memory.
 
 **Don't adopt all three at once.** Start with one skill for your most-repeated workflow. Build the habit of using it. Add more later.
 

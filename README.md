@@ -82,8 +82,11 @@ Claude then asks per fix: *"Want me to copy the feedback.md template and walk yo
 | `.claude/commands/statusreport.md` | The skill that runs the audit |
 | `.claude/commands/log-feedback.md` | Skill for capturing corrections as rules (keeps feedback loop alive) |
 | `.claude/rules/starter-rules.md.example` | Example modular rules file (when CLAUDE.md outgrows ~150 lines) |
-| `.claude/agents/starter-reviewer.md.example` | Example reviewer subagent with role-specific checklists |
-| `templates/*.example` | Starter CLAUDE.md, TASKS.md, feedback.md, anti-patterns.md |
+| `.claude/agents/starter-reviewer.md.example` | Example generic reviewer subagent |
+| `.claude/agents/planner.md.example` | Planner agent for the 3-agent loop (L4) — read-only, produces plan |
+| `.claude/agents/implementer.md.example` | Implementer agent for the 3-agent loop — executes plan, writes code |
+| `.claude/agents/plan-reviewer.md.example` | Reviewer agent for the 3-agent loop — reviews impl vs. spec + plan |
+| `templates/*.example` | Starter CLAUDE.md, TASKS.md, feedback.md, anti-patterns.md, learnings.md |
 | `examples/` | Working hooks, skills, subagents you can copy |
 
 ---
