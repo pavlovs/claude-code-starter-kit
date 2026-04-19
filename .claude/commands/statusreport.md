@@ -79,14 +79,19 @@ Collect all findings into a mental map. Do NOT output them yet.
 
 Binary checks. Each level requires ALL preceding levels to also pass.
 
+> **Proxy scoring notice:** These checks are intentionally lenient — they verify the minimum *artifacts* are present. `MATURITY.md` lists the fuller "what L_n looks like when fully adopted" checklists. A fixture can pass a level here and still have items from the MATURITY checklist unchecked (habits vs. artifacts). That's by design — the skill scores floor, not ceiling.
+
 ### L1 — Identity anchor
-- PASS if: `CLAUDE.md` exists (project OR global) AND contains an identity-style heading (e.g., `## About me`, `## Identity`, `## Who I am`) AND contains a working-style-style heading (e.g., `## Working style`, `## Tone`, `## Response style`).
+- PASS if: `CLAUDE.md` exists (project root OR `.claude/CLAUDE.md` OR `~/.claude/CLAUDE.md` OR `~/.claude/rules/*.md` has content) AND *any* found location has an identity-style heading (e.g., `## About me`, `## Identity`, `## Who I am`) AND contains a working-style-style heading (e.g., `## Working style`, `## Tone`, `## Response style`).
+- Report which location satisfied the check in the evidence line.
 
 ### L2 — Task discipline
 - PASS if: L1 passed AND `TASKS.md` exists in the project AND contains at least 2 distinct tags from `[ME]`, `[AGENT]`, `[TOGETHER]`, `[WIP]`.
+- **Bonus signal:** if any `[AGENT]` task exists, at least one has an `| AC:` field. Note in evidence: `"AC present on [AGENT] tasks"` or `"[AGENT] tasks missing AC — fix recommended"`.
 
 ### L3 — Feedback loop
-- PASS if: L2 passed AND `feedback.md` exists AND has non-empty content (more than just headers) AND has been modified in the last 14 days (check mtime if possible; otherwise check for dated entries).
+- PASS if: L2 passed AND `feedback.md` exists AND has non-empty content (more than just headers) AND has a dated entry (format `YYYY-MM-DD`) within the last 14 days AND `anti-patterns.md` exists (even if empty of patterns).
+- **Prefer dated entries over file mtime** — mtime changes on `git checkout` / `cp` / OS indexing and can flip the score. Dated `YYYY-MM-DD` entries in the file content are stable.
 - **Bonus signal (note in evidence line):** `learnings.md` also exists — user has the full 3-tier knowledge loop.
 
 ### L4 — Protocols + context layers + methodology

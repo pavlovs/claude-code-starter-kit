@@ -1,6 +1,9 @@
 # Local Codex review artifacts (generated per-run, not meant to be shared)
 .codex/
 
+# Synthetic test fixtures used to simulate /statusreport — regenerate as needed
+.test-fixtures/
+
 # Claude Code local overrides (user-specific, should not be committed)
 CLAUDE.local.md
 .claude/settings.local.json
