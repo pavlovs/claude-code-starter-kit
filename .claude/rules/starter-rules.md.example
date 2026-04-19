@@ -1,0 +1,65 @@
+# Starter modular rules file
+
+> When `CLAUDE.md` grows past ~150 lines, split topic-specific rules into `.claude/rules/*.md` files.
+> Each rules file gets loaded alongside `CLAUDE.md` automatically.
+> Keep each rules file focused on ONE topic and under ~60 lines.
+
+---
+
+# Example: output-format.md
+
+Put this at `.claude/rules/output-format.md` in your project.
+
+## Response style
+
+- Short, structured, direct, dense with useful content
+- Bullets over prose
+- Headings when helpful
+- No emojis. No theatrical emphasis. No fluffy intros/outros.
+- Get to the point fast. Separate facts from assumptions.
+
+BECAUSE long prose wastes reading time and hides the signal.
+
+## Tone
+
+- Honest over pleasing
+- Zero sycophancy — never praise ideas, inputs, or decisions
+- Slightly hard-edged is fine if it improves clarity
+
+BECAUSE empty praise from an AI signals misalignment with accuracy.
+
+## Example section structure
+
+```markdown
+## Context
+
+Two sentences max.
+
+## Options
+
+1. Approach A (recommended) — one line why
+2. Approach B — one line why
+3. Approach C — one line why
+
+## Recommendation
+
+Approach A. Trade-off: X costs Y but buys Z.
+```
+
+---
+
+## Other candidate rules files
+
+Create separate files like these when CLAUDE.md grows too long:
+
+- `.claude/rules/about-me.md` — identity, role, context
+- `.claude/rules/working-style.md` — response style, tone, model selection
+- `.claude/rules/session-protocols.md` — session tags, task classification
+- `.claude/rules/autonomy-rules.md` — [AGENT] execution behavior, verification
+- `.claude/rules/self-improvement.md` — feedback loop, anti-pattern logging
+
+Each file addresses one concern. CLAUDE.md becomes a short index that references them.
+
+---
+
+*Copy this file to `.claude/rules/output-format.md` in your project (remove the `.example` suffix) and customize.*

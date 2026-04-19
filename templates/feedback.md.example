@@ -1,0 +1,36 @@
+# Feedback
+
+> Log of corrections that should permanently change Claude's behavior.
+> After any correction, write the RULE that would have prevented it here — not a description of what went wrong.
+> Review at session start. Apply open fixes silently.
+
+## Protocol
+
+After Claude makes a mistake you correct:
+
+1. **Write the rule**, not the mistake
+   - BAD: "Claude used the wrong file path for the config"
+   - GOOD: "Always run `ls config/` before assuming the config file location — the repo has both `config.json` and `config.local.json` and they're used differently"
+
+2. **Add BECAUSE to non-obvious rules** — future you (and Claude) need to know *why* the rule exists, so edge cases can be judged
+   - "Always X BECAUSE Y" format
+
+3. **Same session.** Don't defer. Feedback not applied immediately WILL recur.
+
+4. **If it's a recurring pattern**, promote it to `anti-patterns.md`.
+
+---
+
+## Open Issues
+
+<!-- Add new items at top. When resolved, move to Resolved section below. -->
+
+- <CUSTOMIZE: your first feedback item>
+
+## Resolved
+
+- <Example — resolved on YYYY-MM-DD: Always check both config.json and config.local.json before making assumptions about config values. BECAUSE local overrides are common in this repo and checking only one leads to wrong conclusions.>
+
+---
+
+*Template from https://github.com/pavlovs/claude-code-starter-kit — run `/statusreport` to audit your setup.*

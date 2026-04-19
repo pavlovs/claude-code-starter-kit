@@ -1,0 +1,34 @@
+# Anti-Patterns
+
+> Recurring failure patterns Claude has demonstrated, codified so they don't repeat.
+> Each pattern: **Name** / **Detection signal** / **Resolution**.
+> Read at session start alongside `feedback.md`.
+
+## When to add a pattern
+
+Promote an entry from `feedback.md` to here when:
+- It's happened 2+ times
+- It's structural (applies across many tasks, not just one)
+- You want Claude to actively scan for it, not just avoid it
+
+## Format
+
+Each pattern is scannable in 3 lines. Keep it tight — long patterns get skipped.
+
+---
+
+## Example patterns
+
+### ZOMBIE-CONTENT
+- **Detection:** Claude re-adds content that was deliberately deleted in the previous turn
+- **Resolution:** Read the current file state before any edit. Deletions are intentional.
+
+### <CUSTOMIZE: your patterns here>
+
+### STALE-DOCS
+- **Detection:** Claude recommends based on README or PLAN.md without checking if the code actually matches
+- **Resolution:** Docs drift. Before recommending work, verify current state with `git log --oneline` and reading the actual implementation.
+
+---
+
+*Template from https://github.com/pavlovs/claude-code-starter-kit — run `/statusreport` to audit your setup.*

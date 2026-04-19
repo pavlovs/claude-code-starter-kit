@@ -1,0 +1,17 @@
+{
+  "_comment": "Stop hook — nudges Claude to keep going if it stopped mid-task. Paste this into ~/.claude/settings.json under the top-level hooks key. If you already have other Stop hooks, add this as an additional entry in the array.",
+
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Did you complete the task fully or stop mid-way? If mid-way, continue without waiting for a new message. If complete, confirm with a short summary of what was done and how it was verified.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

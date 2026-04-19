@@ -1,0 +1,50 @@
+# TASKS
+
+> Your single source of truth for what's active. Read at session start. Update when tasks change.
+
+## Tag legend
+
+- **[ME]** — only you can do this
+- **[AGENT]** — Claude executes autonomously
+- **[TOGETHER]** — needs your input before Claude can proceed
+- **[WIP]** — actively in progress
+
+No tag = treat as [ME].
+
+## Acceptance criteria (AC) on [AGENT] tasks
+
+Every `[AGENT]` task should have a 1–2 line AC field defining what "done" looks like. Claude verifies against it before marking `[x]`.
+
+Bad: `[AGENT] Research buyers for Project X`
+Good: `[AGENT] Build buyer long-list for Project X | AC: 15+ names, scored table, outreach draft for top 5`
+
+---
+
+## What moves the needle today
+
+- [ ] <CUSTOMIZE: 1-3 highest-priority items>
+
+## Prio A — today
+
+- [ ] [ME] <Example: Call supplier re: pricing>
+- [ ] [AGENT] <Example: Draft competitor comparison table | AC: 5 competitors, 4 axes, one-paragraph summary>
+- [ ] [TOGETHER] <Example: Decide on feature X vs Y — need your preference>
+
+## Prio A — this week
+
+- [ ] [WIP] <Example: Finalize Q2 roadmap>
+- [ ] [AGENT] <Example: Audit current auth flow | AC: report with 3 risks + 3 fixes>
+
+## Prio B — someday
+
+- [ ] [ME] <Example: Write internal blog post about migration>
+
+---
+
+## Resolved this week
+
+- [x] [AGENT] <Example task you completed. Verified by: test output X passed>
+
+---
+
+*Template from https://github.com/pavlovs/claude-code-starter-kit — run `/statusreport` to audit your setup.*
